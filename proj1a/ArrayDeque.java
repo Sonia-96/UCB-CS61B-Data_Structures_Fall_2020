@@ -30,21 +30,6 @@ public class ArrayDeque<T> {
         size += 1;
     }
 
-    public void resize(int capacity) {
-        T[] newItems = (T[]) new Object[capacity];
-        int pos = (newItems.length - size) / 2;
-        if (nextLast - nextFirst - 1 == size) { // reduce the size
-            System.arraycopy(items, nextFirst + 1, newItems, pos, size);
-        } else { // enlarge the size
-            System.arraycopy(items, nextFirst + 1, newItems, pos, size - nextFirst - 1);
-            pos += size - nextFirst - 1;
-            System.arraycopy(items, 0, newItems, pos, nextFirst + 1);
-        }
-        items = newItems;
-        nextFirst = (items.length - size) / 2 - 1;
-        nextLast = nextFirst + size + 1;
-    }
-
     public boolean isEmpty() {
         return size == 0;
     }
@@ -63,6 +48,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         nextFirst = rePosition(nextFirst + 1);
         T toRemove = items[nextFirst];
         items[nextFirst] = null;
@@ -72,6 +60,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         nextLast = rePosition(nextLast - 1);
         T toRemove = items[nextLast];
         items[nextLast] = null;
@@ -102,6 +93,21 @@ public class ArrayDeque<T> {
         if (items.length >= 16 && usage < 0.25) {
             resize(items.length / 2);
         }
+    }
+
+    private void resize(int capacity) {
+        T[] newItems = (T[]) new Object[capacity];
+        int pos = (newItems.length - size) / 2;
+        if (nextLast - nextFirst - 1 == size) { // reduce the size
+            System.arraycopy(items, nextFirst + 1, newItems, pos, size);
+        } else { // enlarge the size
+            System.arraycopy(items, nextFirst + 1, newItems, pos, size - nextFirst - 1);
+            pos += size - nextFirst - 1;
+            System.arraycopy(items, 0, newItems, pos, nextFirst + 1);
+        }
+        items = newItems;
+        nextFirst = (items.length - size) / 2 - 1;
+        nextLast = nextFirst + size + 1;
     }
 
 //    public static void main(String[] args) {
