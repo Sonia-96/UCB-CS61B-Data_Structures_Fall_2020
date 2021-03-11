@@ -31,16 +31,16 @@ public class ArrayDeque<T> {
     }
 
     public void resize(int capacity) {
-        T[] new_items = (T[]) new Object[capacity];
-        int start_pos = (new_items.length - size ) / 2;
+        T[] newItems = (T[]) new Object[capacity];
+        int pos = (newItems.length - size) / 2;
         if (nextLast - nextFirst - 1 == size) { // reduce the size
-            System.arraycopy(items, nextFirst + 1, new_items, start_pos, size);
+            System.arraycopy(items, nextFirst + 1, newItems, pos, size);
         } else { // enlarge the size
-            System.arraycopy(items, nextFirst + 1, new_items, start_pos, size - nextFirst - 1);
-            start_pos += size - nextFirst - 1;
-            System.arraycopy(items, 0, new_items, start_pos, nextFirst + 1);
+            System.arraycopy(items, nextFirst + 1, newItems, pos, size - nextFirst - 1);
+            pos += size - nextFirst - 1;
+            System.arraycopy(items, 0, newItems, pos, nextFirst + 1);
         }
-        items = new_items;
+        items = newItems;
         nextFirst = (items.length - size) / 2 - 1;
         nextLast = nextFirst + size + 1;
     }
@@ -93,13 +93,13 @@ public class ArrayDeque<T> {
     }
 
     // below are helper functions
-    public int rePosition(int pos) {
+    private int rePosition(int pos) {
         return (pos + items.length) % items.length;
     }
 
-    public void checkUsageRatio() {
-        double usage_ratio = (double) size / items.length;
-        if (items.length >= 16 && usage_ratio < 0.25) {
+    private void checkUsageRatio() {
+        double usage = (double) size / items.length;
+        if (items.length >= 16 && usage < 0.25) {
             resize(items.length / 2);
         }
     }
