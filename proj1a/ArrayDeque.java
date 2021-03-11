@@ -109,31 +109,4 @@ public class ArrayDeque<T> {
         nextFirst = (items.length - size) / 2 - 1;
         nextLast = nextFirst + size + 1;
     }
-
-//    public static void main(String[] args) {
-//        ArrayDeque<String> A = new ArrayDeque<>();
-//        A.addLast("a");
-//        A.addLast("b");
-//        A.addFirst("c");
-//        A.addLast("d");
-//        A.addLast("e");
-//        A.addFirst("f");
-//        A.addFirst("g");
-//        A.addLast("h");
-//        A.addFirst("i");
-//        A.addFirst("j");
-//        A.addLast("k");
-//        A.addFirst("l");
-//        A.addFirst("m");
-//        A.addFirst("n");
-//        A.addFirst("o");
-//        A.addFirst("p");
-//        A.addLast("q");
-//        for(int i = 0; i < 10; i++) {
-//            A.removeLast();
-//        }
-//        A.printDeque();
-//        System.out.println(A.size());
-//        System.out.println(A.get(3));
-//    }
 }
