@@ -6,11 +6,11 @@ public class NBody {
 		return universe_radius;
 	}
 
-	public static Body[] readBodies(String planetsTxtPath) {
+	public static Planet[] readBodies(String planetsTxtPath) {
 		In in = new In(planetsTxtPath);
 		int num = in.readInt();
 		double universe_radius = in.readDouble();
-		Body[] allBodys = new Body[num];
+		Planet[] allBodys = new Planet[num];
 		for (int i = 0; i < num; i++) {
 			double xxPos = in.readDouble();
 			double yyPos = in.readDouble();
@@ -18,7 +18,7 @@ public class NBody {
 			double yyVel = in.readDouble();
 			double mass = in.readDouble();
 			String imgFileName = "images/" + in.readString();
-			allBodys[i] = new Body(xxPos, yyPos, xxVel, yyVel, mass, imgFileName);
+			allBodys[i] = new Planet(xxPos, yyPos, xxVel, yyVel, mass, imgFileName);
 		}
 		return allBodys;
 	}
@@ -28,13 +28,13 @@ public class NBody {
 		double dt = Double.parseDouble(args[1]);
 		String fileName = args[2];
 		double universe_radius = readRadius(fileName);
-		Body[] allBodys = readBodies(fileName);
+		Planet[] allBodys = readBodies(fileName);
 		String universe = "images/starfield.jpg";
 
 		
 		StdDraw.setScale(-universe_radius, universe_radius);
 		StdDraw.picture(0, 0, universe);
-		for (Body body : allBodys) {
+		for (Planet body : allBodys) {
 			body.draw();
 		}
 
@@ -52,7 +52,7 @@ public class NBody {
 				allBodys[i].update(dt, xForces[i], yForces[i]);
 			}
 			StdDraw.picture(0, 0, universe);
-			for (Body body : allBodys) {
+			for (Planet body : allBodys) {
 				body.draw();
 			}
 			StdDraw.show();
@@ -62,7 +62,7 @@ public class NBody {
 
 		StdOut.printf("%d\n", allBodys.length);
 		StdOut.printf("%.2e\n", universe_radius);
-		for (Body body: allBodys) {
+		for (Planet body: allBodys) {
 			StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n", 
 				body.xxPos, body.yyPos, body.xxVel, body.yyVel, body.mass, body.imgFileName);
 		}
