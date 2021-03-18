@@ -32,7 +32,7 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome("ab", offByOne));
         assertFalse(palindrome.isPalindrome("ad", offByOne));
         assertTrue(palindrome.isPalindrome("flake", offByOne));
-        assertTrue(palindrome.isPalindrome("Ab", offByOne));
+        assertFalse(palindrome.isPalindrome("Ab", offByOne));
     }
 
     @Test
