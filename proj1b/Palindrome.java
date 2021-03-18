@@ -24,7 +24,7 @@ public class Palindrome {
         if (word == null) {
             return false;
         }
-        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word);
+        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word.toLowerCase());
         return isPalindrome(wordDeque);
     }
 
@@ -45,7 +45,7 @@ public class Palindrome {
         if (word == null) {
             return false;
         }
-        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word);
+        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word.toLowerCase());
         return isPalindrome(wordDeque, cc);
     }
 }
