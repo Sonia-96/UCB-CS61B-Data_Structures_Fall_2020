@@ -17,14 +17,13 @@ public class Palindrome {
             dq.removeLast();
             return isPalindrome(dq);
         }
-
     }
 
     public boolean isPalindrome(String word) {
         if (word == null) {
             return false;
         }
-        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word.toLowerCase());
+        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word);
         return isPalindrome(wordDeque);
     }
 
@@ -38,14 +37,13 @@ public class Palindrome {
             dq.removeLast();
             return isPalindrome(dq, cc);
         }
-
     }
 
     public boolean isPalindrome(String word, CharacterComparator cc) {
         if (word == null) {
             return false;
         }
-        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word.toLowerCase());
+        ArrayDeque<Character> wordDeque = (ArrayDeque) wordToDeque(word);
         return isPalindrome(wordDeque, cc);
     }
 }
