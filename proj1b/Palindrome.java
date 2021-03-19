@@ -8,14 +8,16 @@ public class Palindrome {
     }
 
     private static boolean isPalindrome(ArrayDeque<Character> dq) {
-        if (dq.size == 0) {
+        if (dq.size() == 0 || dq.size() == 1) {
             return true;
-        } else if (dq.get(0) != dq.get(dq.size - 1)) {
-            return false;
         } else {
-            dq.removeFirst();
-            dq.removeLast();
-            return isPalindrome(dq);
+            char first = dq.removeFirst();
+            char last = dq.removeLast();
+            if (first != last) {
+                return false;
+            } else {
+                return isPalindrome(dq);
+            }
         }
     }
 
@@ -28,14 +30,16 @@ public class Palindrome {
     }
 
     private static boolean isPalindrome(ArrayDeque<Character> dq, CharacterComparator cc) {
-        if (dq.size == 0 || dq.size == 1) {
+        if (dq.size() == 0 || dq.size() == 1) {
             return true;
-        } else if (!cc.equalChars(dq.get(0), dq.get(dq.size - 1))) {
-            return false;
         } else {
-            dq.removeFirst();
-            dq.removeLast();
-            return isPalindrome(dq, cc);
+            char first = dq.removeFirst();
+            char last = dq.removeLast();
+            if (!cc.equalChars(first, last)) {
+                return false;
+            } else {
+                return isPalindrome(dq, cc);
+            }
         }
     }
 
