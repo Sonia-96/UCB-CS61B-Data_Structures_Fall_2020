@@ -25,16 +25,14 @@ public class TimeAList {
             AList<Integer> L = new AList<>();
 
             Stopwatch sw = new Stopwatch();
-            int j = 0;
-            while (j < i) {
+            for (int j = 0; j < i; j++) {
                 L.addLast(j);
-                j += 1;
             }
             double timeInSeconds = sw.elapsedTime();
 
-            Ns.add(j);
+            Ns.add(i);
             times.add(timeInSeconds);
-            opCounts.add(j);
+            opCounts.add(i);
         }
         printTimingTable(Ns, times, opCounts);
     }
