@@ -16,6 +16,7 @@ public class StopwatchDemo {
     public static void main(String[] args) {
         Stopwatch sw = new Stopwatch();
         int fib41 = fib(41);
+        double timeInSeconds = sw.elapsedTime();
         System.out.println("The 41th fibonacci number is " + fib41);
         System.out.println("Time taken to compute 41st fibonacci number: " + timeInSeconds + " seconds.");
     }
