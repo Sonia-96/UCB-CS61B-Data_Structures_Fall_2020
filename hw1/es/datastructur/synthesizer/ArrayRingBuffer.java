@@ -44,7 +44,16 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
 
     @Override
     public boolean equals(Object o) {
-        ArrayRingBuffer<T> other = (ArrayRingBuffer) o;
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (this.getClass() != o.getClass()) {
+            return false;
+        }
+        ArrayRingBuffer<T> other = (ArrayRingBuffer<T>) o;
         if (this.fillCount() != other.fillCount()) {
             return false;
         }
