@@ -13,6 +13,16 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
     /* Array for storing the buffer data. */
     private T[] rb;
 
+    /**
+     * Create a new ArrayRingBuffer with the given capacity.
+     */
+    public ArrayRingBuffer(int capacity) {
+        rb = (T[]) new Object[capacity];
+        first = 0;
+        last = 0;
+        fillCount = 0;
+    }
+
     private class ArrayRingBufferIterator implements Iterator<T> {
         int index = first;
         @Override
@@ -27,6 +37,7 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
         }
     }
 
+    @Override
     public ArrayRingBufferIterator iterator() {
         return new ArrayRingBufferIterator();
     }
@@ -46,16 +57,6 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T> {
             }
         }
         return true;
-    }
-
-    /**
-     * Create a new ArrayRingBuffer with the given capacity.
-     */
-    public ArrayRingBuffer(int capacity) {
-        rb = (T[]) new Object[capacity];
-        first = 0;
-        last = 0;
-        fillCount = 0;
     }
 
     @Override
