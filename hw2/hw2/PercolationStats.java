@@ -6,9 +6,12 @@ import edu.princeton.cs.algs4.StdStats;
 import static java.lang.Math.sqrt;
 
 public class PercolationStats {
-    double[] openFraction;
+    private double[] openFraction;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) {
+            throw new IndexOutOfBoundsException("N and T should be greater than 0!");
+        }
         openFraction = new double[T];
         for (int i = 0; i < T; i++) {
             Percolation P = pf.make(N);
