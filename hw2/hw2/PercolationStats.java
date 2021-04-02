@@ -10,7 +10,7 @@ public class PercolationStats {
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {
-            throw new IndexOutOfBoundsException("N and T should be greater than 0!");
+            throw new IllegalArgumentException ("N and T should be greater than 0!");
         }
         openFraction = new double[T];
         for (int i = 0; i < T; i++) {
