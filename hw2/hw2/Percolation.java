@@ -9,7 +9,7 @@ public class Percolation {
     private WeightedQuickUnionUF ufNoBottom; // avoid backwash
     private int N;
     private int[] isOpen;
-    private int openSites;
+    private int numOpenSites;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -17,7 +17,7 @@ public class Percolation {
         }
         this.N = N;
         isOpen = new int[N * N + 2];
-        openSites = 0;
+        numOpenSites = 0;
         // the index of top is 0, the index of bottom is N * N - 1
         uf = new WeightedQuickUnionUF(N * N + 2);
         ufNoBottom = new WeightedQuickUnionUF(N * N + 1);
@@ -28,7 +28,7 @@ public class Percolation {
         int p = xyTo1D(row, col);
         if (isOpen[p] == 0) {
             isOpen[p] = 1;
-            openSites += 1;
+            numOpenSites += 1;
             if (row == 0) {
                 uf.union(0, p);
                 ufNoBottom.union(0, p);
@@ -37,22 +37,17 @@ public class Percolation {
                 uf.union(N * N + 1, p);
             } // 如果在最后一排，则和底部联通
 
-            if (p - N > 0 && isOpen[p - N] == 1) {
-                uf.union(p, p - N);
-                ufNoBottom.union(p, p - N);
-            } // 上
-            if (p + N <= N * N && isOpen[p + N] == 1) {
-                uf.union(p, p + N);
-                ufNoBottom.union(p, p + N);
-            } // 下
-            if (p - 1 > 0 && isOpen[p - 1] == 1) {
-                uf.union(p, p - 1);
-                ufNoBottom.union(p, p - 1);
-            } // 左
-            if (p + 1 <= N * N && isOpen[p + 1] == 1) {
-                uf.union(p, p + 1);
-                ufNoBottom.union(p, p + 1);
-            } // 右
+            int[][] neighbors = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+            for (int[] neighbor : neighbors) {
+                int adjRow = row + neighbor[0];
+                int adjCol = col + neighbor[1];
+                if (adjRow >= 0 && adjRow < N && adjCol >= 0 && adjCol < N) {
+                    if (isOpen(adjRow, adjCol)) {
+                        uf.union(p, xyTo1D(adjRow, adjCol));
+                        ufNoBottom.union(p, xyTo1D(adjRow, adjCol));
+                    }
+                }
+            }
         }
     }
 
@@ -67,7 +62,7 @@ public class Percolation {
     }
 
     public int numberOfOpenSites() {
-        return openSites;
+        return numOpenSites;
     }
 
     public boolean percolates() {
@@ -95,7 +90,7 @@ public class Percolation {
         P.open(2, 2);
         P.open(2, 3);
         P.open(0, 2);
-        assertEquals(5, P.openSites);
+        assertEquals(5, P.numOpenSites);
         assertTrue(P.isFull(0, 2));
         assertFalse(P.isFull(2, 2));
         P.open(1, 2);
