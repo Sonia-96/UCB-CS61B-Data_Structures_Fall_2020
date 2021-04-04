@@ -97,32 +97,18 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     // in-order traversal
     private void printInOrder() {
-        printInOrder(root);
-    }
-
-    private void printInOrder(Node x) {
-        if (x == null) {
-            return;
+        Iterator<K> itr = iterator();
+        while (itr.hasNext()) {
+            System.out.print(itr.next() + " ");
         }
-        printInOrder(x.left);
-        System.out.print(x.value + " ");
-        printInOrder(x.right);
+        System.out.println();
     }
 
     @Override
     public Set<K> keySet() {
         Set<K> set = new HashSet<>();
-        // in-order traversal
-        Stack<Node> stack = new Stack<>();
-        Node p = root;
-        while (stack.size() != 0 || p != null) {
-            while (p != null) {
-                stack.add(p);
-                p = p.left;
-            }
-            p = stack.pop();
-            set.add(p.key);
-            p = p.right;
+        for (K key : this) {
+            set.add(key);
         }
         return set;
     }
@@ -159,10 +145,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (key == null) {
             throw new IllegalArgumentException("calls remove() with a null key");
         }
-        V toReturn = get(key);
+        V toRemove = get(key);
         root = remove(root, key);
-        return toReturn;
-
+        return toRemove;
     }
 
     private Node remove(Node x, K key) {
@@ -190,11 +175,57 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        V toRemove = get(key);
+        if (!toRemove.equals(value)) {
+            return null;
+        } else {
+            root = remove(root, key);
+            return toRemove;
+        }
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new BSTIterator(root);
+    }
+
+    private class BSTIterator implements Iterator<K> {
+        private Stack<Node> stack = new Stack<>();
+
+        public BSTIterator(Node x) {
+            // push root and all of its left children
+            while (x != null) {
+                stack.push(x);
+                x = x.left;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        @Override
+        public K next() {
+            Node curr = stack.pop();
+            Node x = curr.right;
+            while (x != null) {
+                stack.push(x);
+                x = x.left;
+            }
+            return curr.key;
+        }
+    }
+
+    public static void main(String[] args) {
+        BSTMap<String, Integer> bst = new BSTMap<>();
+        for (int i = 1; i < 20; i++) {
+            bst.put("a" + i, i);
+        }
+        for (String s : bst) {
+            System.out.print(s + " ");
+        }
+        System.out.println();
+        bst.printInOrder();
     }
 }
