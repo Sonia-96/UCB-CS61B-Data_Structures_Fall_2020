@@ -1,6 +1,6 @@
 import java.util.Set;
 
-public interface Map61B<K extends Comparable<K>, V> extends Iterable<K> {
+public interface Map61B<K, V> extends Iterable<K> {
     /** Removes all of the mappings from this map. */
     void clear();
 
