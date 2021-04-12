@@ -27,8 +27,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     public MyHashMap(int initialSize) {
         this.initialSize = initialSize;
-        hashTable = new ArrayList[initialSize];
-        for (int i = 0; i < initialSize; i++) {
+        hashTable = new ArrayList[this.initialSize];
+        for (int i = 0; i < this.initialSize; i++) {
             hashTable[i] = new ArrayList<>();
         }
     };
@@ -36,8 +36,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public MyHashMap(int initialSize, double loadFactor) {
         this.initialSize = initialSize;
         this.loadFactor = loadFactor;
-        hashTable = new ArrayList[initialSize];
-        for (int i = 0; i < initialSize; i++) {
+        hashTable = new ArrayList[this.initialSize];
+        for (int i = 0; i < this.initialSize; i++) {
             hashTable[i] = new ArrayList<>();
         }
     }
@@ -108,8 +108,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     private void resize(int capacity) {
         MyHashMap<K, V> temp = new MyHashMap<>(capacity);
-        for (int i = 0; i < hashTable.length; i++) {
-            for (Entry e : hashTable[i]) {
+        for (ArrayList<Entry> entries : hashTable) {
+            for (Entry e : entries) {
                 temp.put(e.key, e.val);
             }
         }
@@ -120,8 +120,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public Set<K> keySet() {
         Set<K> keySet = new HashSet<>();
-        for (int i = 0; i < hashTable.length; i++) {
-            for (Entry e : hashTable[i]) {
+        for (ArrayList<Entry> entries : hashTable) {
+            for (Entry e : entries) {
                 keySet.add(e.key);
             }
         }
@@ -152,5 +152,4 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public V remove(K key, V value) {
         throw new UnsupportedOperationException();
     };
-
 }
