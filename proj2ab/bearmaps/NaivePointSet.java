@@ -1,16 +1,12 @@
 package bearmaps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NaivePointSet implements PointSet{
-    List<Point> points;
+    private List<Point> points;
 
     public NaivePointSet(List<Point> points) {
-        this.points = new ArrayList<>();
-        for (Point p : points) {
-            this.points.add(p);
-        }
+        this.points = points;
     }
 
     @Override

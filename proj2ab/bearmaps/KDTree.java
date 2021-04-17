@@ -37,28 +37,30 @@ public class KDTree {
     }
 
     private void put(Point p) {
-        root = put(root, 0, p);
+        root = put(root, p, 0);
     }
 
-    private Node put(Node n, int currDepth, Point p) {
+    private Node put(Node n, Point p, int currDepth) {
         if (n == null) {
             return new Node(currDepth, p);
         }
-        // 偶数层比较x坐标
-        if (n.depth % 2 == 0) {
-            if (p.getX() < n.getX()) {
-                n.left = put(n.left, n.depth + 1, p);
-            } else if (p.getX() > n.getX() || p.getY() != n.getY()) {
-                n.right = put(n.right, n.depth + 1, p);
-            }
-        } else { // 奇数层比较y坐标
-            if (p.getY() < n.getY()) {
-                n.left = put(n.left, n.depth + 1, p);
-            } else if (p.getY() > n.getY() || p.getX() != n.getX()) {
-                n.right = put(n.right, n.depth + 1, p);
-            }
+        if (p.equals(n.point)) {
+            return n;
+        }
+        double cmp = compare(n.point, p, currDepth);
+        if (cmp < 0) {
+            n.left = put(n.left, p, currDepth + 1);
+        } else {
+            n.right = put(n.right, p, currDepth + 1);
         }
         return n;
+    }
+
+    private double compare(Point a, Point b, int depth) {
+        if (depth % 2 == 0) {
+            return a.getX() - b.getX();
+        }
+        return a.getY() - b.getY();
     }
 
     public Point nearest(double x, double y) {
@@ -72,26 +74,20 @@ public class KDTree {
         if (n.distance(goal) < best.distance(goal)) {
             best = n;
         }
-        // good side first
         Node goodSide, badSide;
+        double cmp = compare(n.point, goal, n.depth);
+        if (cmp < 0) {
+            goodSide = n.left;
+            badSide = n.right;
+        } else {
+            goodSide = n.right;
+            badSide = n.left;
+        }
+        // check if the bad side is worthlooking
         double badDist;
-        if (n.depth % 2 == 0) { // 偶数层比较x坐标
-            if (goal.getX() < n.getX()) {
-                goodSide = n.left;
-                badSide = n.right;
-            } else {
-                goodSide = n.right;
-                badSide = n.left;
-            }
+        if (n.depth % 2 == 0) {
             badDist = Math.pow(goal.getX() - n.getX(), 2);
         } else {
-            if (goal.getY() < n.getY()) {
-                goodSide = n.left;
-                badSide = n.right;
-            } else {
-                goodSide = n.right;
-                badSide = n.left;
-            }
             badDist = Math.pow(goal.getY() - n.getY(), 2);
         }
         best = nearest(goodSide, goal, best);

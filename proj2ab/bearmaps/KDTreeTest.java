@@ -47,8 +47,8 @@ public class KDTreeTest {
 
         KDTree kdtree = new KDTree(points);
         NaivePointSet nn = new NaivePointSet(points);
-        assertEquals(nn.nearest(3.0, 4.0).getX(), kdtree.nearest(3.0, 4.0).getX(), 0.00000001);
-        assertEquals(nn.nearest(3.0, 4.0).getY(), kdtree.nearest(3.0, 4.0).getY(), 0.00000001);
+        assertEquals(nn.nearest(0, 7).getX(), kdtree.nearest(0, 7).getX(), 0.00000001);
+        assertEquals(nn.nearest(0, 7).getY(), kdtree.nearest(0, 7).getY(), 0.00000001);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class KDTreeTest {
             nn.nearest(goal.getX(), goal.getY());
         }
         double nnTime = nnSw.elapsedTime();
-        System.out.println("The time of NaivePointSet: " + nnTime + "seconds");
+        System.out.println("NaivePointSet 500 queries on 100,000 points: " + nnTime + "seconds");
 
         Stopwatch kdSw = new Stopwatch();
         for (int i = 0; i < 500; i++) {
@@ -92,6 +92,6 @@ public class KDTreeTest {
             kdtree.nearest(goal.getX(), goal.getY());
         }
         double kdTime = kdSw.elapsedTime();
-        System.out.println("The time of kdTree: " + kdTime + "seconds");
+        System.out.println("kdTree 500 queries on 100,000 points: : " + kdTime + "seconds");
     }
 }
