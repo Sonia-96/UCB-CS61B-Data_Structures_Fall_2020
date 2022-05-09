@@ -83,7 +83,7 @@ public class KDTree {
             goodSide = n.right;
             badSide = n.left;
         }
-        // check if the bad side is worthlooking
+        // check if the bad side is worth looking
         double badDist;
         if (n.depth % 2 == 0) {
             badDist = Math.pow(goal.getX() - n.getX(), 2);

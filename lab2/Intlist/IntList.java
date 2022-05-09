@@ -100,7 +100,7 @@ public class IntList {
             return null;
         }
         if (A == null) {
-            return new IntList(B.first, catenate(null, B.rest));
+            return B;
         }
         return new IntList(A.first, catenate(A.rest, B));
     }

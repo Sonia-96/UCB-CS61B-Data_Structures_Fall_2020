@@ -1,12 +1,20 @@
-package bearmaps;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private ArrayList<Node> heap; // 1-based index
-    private HashMap<T, Integer> itemMapIndex;
+    private HashMap<T, Integer> itemMapIndex; // key is item, value is index
+
+    private class Node {
+        T item;
+        double priority;
+
+        public Node(T i, double p) {
+            item = i;
+            priority = p;
+        }
+    }
 
     public ArrayHeapMinPQ() {
         heap = new ArrayList<>();
@@ -14,57 +22,23 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         itemMapIndex = new HashMap<>();
     }
 
-    private class Node {
-        T item;
-        double priority;
-
-        private Node(T i, double p) {
-            item = i;
-            priority = p;
-        }
-    }
-
-    private int parent(int k) {
-        return k / 2;
-    }
-
-    private int left(int k) {
-        return k * 2;
-    }
-
-    private int right(int k) {
-        return k * 2 + 1;
-    }
-
-    private void swap(int i, int j) {
-        Node temp = heap.get(j);
-        heap.set(j, heap.get(i));
-        heap.set(i, temp);
-        itemMapIndex.replace(heap.get(i).item, i);
-        itemMapIndex.replace(heap.get(j).item, j);
-    }
-
     private void swim(int k) {
         int parent = parent(k);
-        if (parent > 0 && parent <= size()) {
-            if (heap.get(k).priority < heap.get(parent).priority) {
-                swap(k, parent);
-                swim(parent);
-            }
+        if (parent > 0 && heap.get(k).priority < heap.get(parent).priority) {
+            swap(k, parent);
+            swim(parent);
         }
     }
 
     private void sink(int k) {
-        int minIndex = k;
-        int left = left(k);
-        int right = right(k);
-        if (left <= size() && heap.get(k).priority > heap.get(left).priority) {
+        int left = left(k), right = right(k), minIndex = k;
+        if (left <= size() && heap.get(minIndex).priority > heap.get(left).priority) {
             minIndex = left;
         }
         if (right <= size() && heap.get(minIndex).priority > heap.get(right).priority) {
             minIndex = right;
         }
-        if (k != minIndex) {
+        if (minIndex != k) {
             swap(k, minIndex);
             sink(minIndex);
         }
@@ -78,9 +52,10 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (contains(item)) {
             throw new IllegalArgumentException();
         }
-        itemMapIndex.put(item, size() + 1);
         heap.add(new Node(item, priority));
+        itemMapIndex.put(item, size() + 1);
         swim(size());
+
     }
 
     /* Returns true if the PQ contains the given item. */
@@ -105,9 +80,9 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             throw new NoSuchElementException();
         }
         T toReturn = heap.get(1).item;
-        heap.set(1, heap.get(size()));
-        itemMapIndex.remove(toReturn);
+        swap(1, size());
         sink(1);
+        itemMapIndex.remove(toReturn);
         return toReturn;
     }
 
@@ -127,10 +102,30 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         int index = itemMapIndex.get(item);
         double oldPriority = heap.get(index).priority;
         heap.get(index).priority = priority;
-        if (priority < oldPriority) {
-            swim(index);
-        } else if (priority > oldPriority) {
+        if (priority > oldPriority) {
             sink(index);
+        } else {
+            swim(index);
         }
+    }
+
+    private int parent(int k) {
+        return k / 2;
+    }
+
+    private int left(int k) {
+        return k * 2;
+    }
+
+    private int right(int k) {
+        return k * 2 + 1;
+    }
+
+    private void swap(int i, int j) {
+        Node temp = heap.get(i);
+        heap.set(i, heap.get(j));
+        heap.set(j, temp);
+        itemMapIndex.replace(heap.get(i).item, i);
+        itemMapIndex.replace(heap.get(j).item, j);
     }
 }

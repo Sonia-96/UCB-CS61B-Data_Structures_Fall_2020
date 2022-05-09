@@ -61,7 +61,7 @@ public class UnionFind {
     public int find(int v1) {
         // recursion
         validate(v1);
-        if (parent[v1] > 0) {
+        if (parent[v1] >= 0) {
             parent[v1] = find(parent[v1]);
             return parent[v1];
         }
